@@ -1,0 +1,182 @@
+openapi: 3.0.3
+info:
+  title: Media Tracker API
+  description: API para el seguimiento, categorización y calificación de películas y series vistas.
+  version: 1.0.0
+
+paths:
+  /shows:
+    get:
+      summary: Obtiene la lista de películas y series vistas
+      parameters:
+        - name: category
+          in: query
+          required: false
+          description: Filtra los resultados por categoría (movie o series)
+          schema:
+            type: string
+            enum: [movie, series]
+      responses:
+        '200':
+          description: Lista de contenidos devuelta con éxito
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Show'
+    
+    post:
+      summary: Agrega una nueva película o serie a la lista
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShowInput'
+      responses:
+        '201':
+          description: Contenido agregado exitosamente
+
+  /shows/{showId}:
+    put:
+      summary: Edita los detalles de una película o serie existente
+      parameters:
+        - name: showId
+          in: path
+          required: true
+          description: ID del contenido a editar
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ShowInput'
+      responses:
+        '200':
+          description: Contenido actualizado exitosamente
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+          
+    delete:
+      summary: Elimina una película o serie de la lista
+      parameters:
+        - name: showId
+          in: path
+          required: true
+          description: ID del contenido a eliminar
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '204':
+          description: Contenido eliminado exitosamente
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+  /shows/{showId}/ratings:
+    post:
+      summary: Agrega una calificación y reseña a un contenido específico
+      parameters:
+        - name: showId
+          in: path
+          required: true
+          description: ID del contenido a calificar
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RatingInput'
+      responses:
+        '201':
+          description: Calificación registrada con éxito
+        '400':
+          $ref: '#/components/responses/BadRequestError'
+        '404':
+          $ref: '#/components/responses/NotFoundError'
+
+components:
+  schemas:
+    Show:
+      type: object
+      required:
+        - id
+        - title
+        - category
+      properties:
+        id:
+          type: integer
+          format: int64
+        title:
+          type: string
+        category:
+          type: string
+          enum: [movie, series]
+        releaseYear:
+          type: integer
+          format: int32
+        watchedAt:
+          type: string
+          format: date-time
+
+    ShowInput:
+      type: object
+      required:
+        - title
+        - category
+      properties:
+        title:
+          type: string
+        category:
+          type: string
+          enum: [movie, series]
+        releaseYear:
+          type: integer
+          format: int32
+
+    RatingInput:
+      type: object
+      required:
+        - score
+      properties:
+        score:
+          type: integer
+          format: int32
+          minimum: 1
+          maximum: 5
+        comment:
+          type: string
+
+    Error:
+      type: object
+      required:
+        - code
+        - message
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+
+  responses:
+    NotFoundError:
+      description: El recurso solicitado no existe.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+            
+    BadRequestError:
+      description: La solicitud es inválida (por ejemplo, puntuación fuera de rango).
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
