@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python3:*)",
+      "Bash(uvicorn:*)",
+      "Bash(alembic:*)",
+      "Bash(npm:*)",
+      "Bash(pytest:*)",
+      "Bash(pip:*)",
+      "Bash(docker:*)"
+    ],
+    "deny": [
+      "Bash(rm -rf:*)"
+    ]
+  }
+}
