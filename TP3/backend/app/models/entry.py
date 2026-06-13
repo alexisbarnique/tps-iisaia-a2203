@@ -1,31 +1,21 @@
 import uuid
-import enum
+
 from sqlalchemy import String, Integer, Date, Text, DateTime, ForeignKey, Enum
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql import func
 from sqlalchemy.orm import Mapped, mapped_column
+
 from app.database import Base
+from app.enums import CategoryEnum, PlaceTypeEnum
 
-class CategoryEnum(enum.Enum):
-    event = "event"
-    movie_series = "movie_series"
-    book = "book"
-    city = "city"
-    place = "place"
-
-class PlaceTypeEnum(enum.Enum):
-    restaurant = "restaurant"
-    cafe = "cafe"
-    museum = "museum"
-    bar = "bar"
-    park = "park"
-    other = "other"
 
 class Entry(Base):
     __tablename__ = "entries"
 
     id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
-    user_id: Mapped[uuid.UUID] = mapped_column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False)
+    user_id: Mapped[uuid.UUID] = mapped_column(
+        UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
     category: Mapped[CategoryEnum] = mapped_column(Enum(CategoryEnum), nullable=False)
     title: Mapped[str] = mapped_column(String, nullable=False)
     date = mapped_column(Date, nullable=False)

@@ -1,14 +1,16 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
+from sqlalchemy.orm import Session
+
+from app.auth.jwt import create_access_token, hash_password, verify_password
 from app.database import get_db
 from app.models.user import User
-from app.schemas.auth import RegisterRequest, LoginRequest, TokenResponse
-from app.auth.jwt import hash_password, verify_password, create_access_token
+from app.schemas.auth import LoginRequest, RegisterRequest, RegisterResponse, TokenResponse
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])
 
-@router.post("/register", status_code=201)
+
+@router.post("/register", response_model=RegisterResponse, status_code=201)
 def register(req: RegisterRequest, db: Session = Depends(get_db)):
     user = User(email=req.email, password=hash_password(req.password))
     db.add(user)
@@ -18,9 +20,10 @@ def register(req: RegisterRequest, db: Session = Depends(get_db)):
     except IntegrityError:
         db.rollback()
         raise HTTPException(status_code=409, detail="Email already registered")
-    return {"email": user.email, "id": str(user.id)}
+    return user
 
-@router.post("/login", response_model=TokenResponse)
+
+@router.post("/login", response_model=TokenResponse, status_code=200)
 def login(req: LoginRequest, db: Session = Depends(get_db)):
     user = db.query(User).filter(User.email == req.email).first()
     if not user or not verify_password(req.password, user.password):

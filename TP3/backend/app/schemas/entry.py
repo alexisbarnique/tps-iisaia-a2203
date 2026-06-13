@@ -1,23 +1,11 @@
 import uuid
-from pydantic import BaseModel, model_validator, Field
-from typing import Optional
 from datetime import date, datetime
-from enum import Enum
+from typing import Optional
 
-class CategoryEnum(str, Enum):
-    event = "event"
-    movie_series = "movie_series"
-    book = "book"
-    city = "city"
-    place = "place"
+from pydantic import BaseModel, Field, model_validator
 
-class PlaceTypeEnum(str, Enum):
-    restaurant = "restaurant"
-    cafe = "cafe"
-    museum = "museum"
-    bar = "bar"
-    park = "park"
-    other = "other"
+from app.enums import CategoryEnum, PlaceTypeEnum
+
 
 class EntryCreate(BaseModel):
     category: CategoryEnum
@@ -43,10 +31,16 @@ class EntryCreate(BaseModel):
             raise ValueError("place_type only allowed for place entries")
         if self.saga_name is not None and cat not in (CategoryEnum.movie_series, CategoryEnum.book):
             raise ValueError("saga_name only allowed for movie_series or book entries")
+        if cat == CategoryEnum.city and not self.country:
+            raise ValueError("country is required for city entries")
+        if self.city is not None and cat != CategoryEnum.place:
+            raise ValueError("city field only allowed for place entries")
         return self
+
 
 class EntryUpdate(EntryCreate):
     pass
+
 
 class EntryRead(BaseModel):
     id: uuid.UUID

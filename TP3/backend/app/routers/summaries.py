@@ -1,26 +1,33 @@
 from fastapi import APIRouter, Depends
-from sqlalchemy.orm import Session
 from sqlalchemy import extract
+from sqlalchemy.orm import Session
+
+from app.auth.deps import get_current_user
 from app.database import get_db
 from app.models.entry import Entry
 from app.models.user import User
-from app.schemas.summary import MonthlySummary, AnnualSummary, Highlight, MonthBlock
-from app.auth.deps import get_current_user
+from app.schemas.summary import AnnualSummary, Highlight, MonthBlock, MonthlySummary
 
 router = APIRouter(prefix="/api/summaries", tags=["summaries"])
+
 
 def build_highlight(category: str, entries: list) -> Highlight:
     if category == "city":
         countries = list(set(e.country for e in entries if e.country))
         items = [{"city": e.title, "country": e.country} for e in entries]
-        return Highlight(category=category, count=len(entries), items=items,
-                         countries=len(countries), cities=len(entries))
+        return Highlight(
+            category=category, count=len(entries), items=items,
+            countries=len(countries), cities=len(entries),
+        )
     if category == "place":
         by_type: dict[str, int] = {}
         for e in entries:
             pt = e.place_type.value if e.place_type else "other"
             by_type[pt] = by_type.get(pt, 0) + 1
-        items = [{"title": e.title, "place_type": e.place_type.value if e.place_type else None, "city": e.city} for e in entries]
+        items = [
+            {"title": e.title, "place_type": e.place_type.value if e.place_type else None, "city": e.city}
+            for e in entries
+        ]
         return Highlight(category=category, count=len(entries), items=items, by_type=by_type)
     # event, movie_series, book
     items = []
@@ -31,10 +38,11 @@ def build_highlight(category: str, entries: list) -> Highlight:
             item["saga_part"] = e.saga_part
         if e.season_number:
             item["season_number"] = e.season_number
-        if e.rating:
+        if e.rating is not None:
             item["rating"] = e.rating
         items.append(item)
     return Highlight(category=category, count=len(entries), items=items)
+
 
 def group_by_category(entries: list) -> dict[str, list]:
     groups: dict[str, list] = {}
@@ -43,7 +51,8 @@ def group_by_category(entries: list) -> dict[str, list]:
         groups.setdefault(cat, []).append(e)
     return groups
 
-@router.get("/monthly/{year}/{month}", response_model=MonthlySummary)
+
+@router.get("/monthly/{year}/{month}", response_model=MonthlySummary, status_code=200)
 def monthly_summary(
     year: int,
     month: int,
@@ -61,7 +70,8 @@ def monthly_summary(
     highlights = [build_highlight(cat, ents) for cat, ents in groups.items()]
     return MonthlySummary(year=year, month=month, highlights=highlights)
 
-@router.get("/annual/{year}", response_model=AnnualSummary)
+
+@router.get("/annual/{year}", response_model=AnnualSummary, status_code=200)
 def annual_summary(
     year: int,
     db: Session = Depends(get_db),

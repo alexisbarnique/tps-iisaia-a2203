@@ -19,7 +19,7 @@ export const useEntriesStore = defineStore('entries', () => {
 
   async function updateEntry(id, data) {
     const res = await api.put(`/entries/${id}`, data)
-    const idx = entries.value.findIndex(e => e.id === id)
+    const idx = entries.value.findIndex(e => String(e.id) === String(id))
     if (idx !== -1) entries.value[idx] = res.data
     return res.data
   }
