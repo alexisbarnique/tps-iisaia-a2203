@@ -1,4 +1,6 @@
 {
+  "model": "claude-sonnet-4-6",
+  "cleanupPeriodDays": 30,
   "permissions": {
     "allow": [
       "Bash(python3:*)",
@@ -11,6 +13,9 @@
     ],
     "deny": [
       "Bash(rm -rf:*)"
+    ],
+    "ask": [
+      "Bash(git push *)"
     ]
   }
 }
