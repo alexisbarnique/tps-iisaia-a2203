@@ -25,7 +25,7 @@ Aplicación web de seguimiento de vida personal. Registrá conciertos, libros, p
 | Base de datos | PostgreSQL + SQLAlchemy 2.x + Alembic |
 | Frontend | Vue.js 3 + Vite + Pinia |
 | Auth | JWT (Bearer token, 7 días) |
-| Tests | pytest (19 tests) |
+| Tests | pytest (27 tests) |
 
 ---
 
@@ -40,6 +40,15 @@ Aplicación web de seguimiento de vida personal. Registrá conciertos, libros, p
 | 📚 Libro | saga, parte, calificación |
 | 🗺️ Ciudad | país |
 | 🏛️ Lugar | tipo (restaurante/café/museo/bar/parque), ciudad, país, calificación |
+
+### Metas anuales
+
+Definí objetivos anuales por categoría (ej. "leer 12 libros este año") y seguí tu progreso automáticamente. El sistema cuenta las entradas registradas y calcula el porcentaje de avance — sin carga manual.
+
+- Una meta por categoría por año
+- Progreso en tiempo real basado en tus registros
+- Visualización circular en `/goals` y widget compacto en el Dashboard
+- Metas completadas se destacan en verde
 
 ### Resúmenes
 
@@ -124,10 +133,11 @@ pytest tests/ -v
 ```
 tests/test_auth.py        4 passed
 tests/test_entries.py     8 passed
+tests/test_goals.py       8 passed
 tests/test_metadata.py    2 passed
 tests/test_summaries.py   5 passed
 ─────────────────────────────────
-19 passed
+27 passed
 ```
 
 ---
@@ -144,6 +154,10 @@ tests/test_summaries.py   5 passed
 | DELETE | `/api/entries/{id}` | Eliminar entrada |
 | GET | `/api/summaries/monthly/{year}/{month}` | Resumen mensual |
 | GET | `/api/summaries/annual/{year}` | Resumen anual |
+| GET | `/api/goals` | Listar metas con progreso actual |
+| POST | `/api/goals` | Crear meta anual por categoría |
+| PUT | `/api/goals/{id}` | Editar objetivo numérico de una meta |
+| DELETE | `/api/goals/{id}` | Eliminar meta |
 | GET | `/api/categories` | Lista de categorías |
 | GET | `/api/place-types` | Lista de tipos de lugar |
 
@@ -155,19 +169,19 @@ tests/test_summaries.py   5 passed
 TP3/
 ├── backend/
 │   ├── app/
-│   │   ├── models/        # SQLAlchemy: User, Entry
-│   │   ├── schemas/       # Pydantic: validación por categoría
-│   │   ├── routers/       # endpoints: auth, entries, summaries, metadata
+│   │   ├── models/        # SQLAlchemy: User, Entry, Goal
+│   │   ├── schemas/       # Pydantic: validación por categoría, GoalProgress
+│   │   ├── routers/       # endpoints: auth, entries, summaries, metadata, goals
 │   │   └── auth/          # JWT: hash, token, dependency
 │   ├── alembic/           # migraciones
 │   ├── scripts/
 │   │   └── add_entry_cli.py   # skill /add-entry
-│   └── tests/             # 19 tests con TDD
+│   └── tests/             # 27 tests con TDD
 ├── frontend/
 │   └── src/
-│       ├── views/         # Login, Dashboard, Entries, Form, Summaries
-│       ├── components/    # NavBar, EntryCard, SummaryBlock
-│       ├── stores/        # Pinia: auth, entries
+│       ├── views/         # Login, Dashboard, Entries, Form, Summaries, Goals, GoalForm
+│       ├── components/    # NavBar, EntryCard, SummaryBlock, GoalCard
+│       ├── stores/        # Pinia: auth, entries, goals
 │       └── api/           # axios con interceptor JWT
 ├── .claude/
 │   ├── settings.json      # permisos de Claude Code

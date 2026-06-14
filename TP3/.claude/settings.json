@@ -1,5 +1,4 @@
 {
-  "model": "claude-sonnet-4-6",
   "cleanupPeriodDays": 30,
   "permissions": {
     "allow": [
@@ -17,5 +16,9 @@
     "ask": [
       "Bash(git push *)"
     ]
+  },
+  "model": "claude-sonnet-4-6",
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true
   }
 }
