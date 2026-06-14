@@ -26,7 +26,7 @@ def _build_progress(goal: Goal, db: Session) -> GoalProgress:
         .scalar()
         or 0
     )
-    percentage = min(round(current / goal.target * 100, 1), 100.0)
+    percentage = min(round(current / goal.target * 100, 1), 100.0) if goal.target > 0 else 0.0
     base = GoalRead.model_validate(goal)
     return GoalProgress(**base.model_dump(), current=current, percentage=percentage)
 
@@ -57,7 +57,10 @@ def create_goal(
         db.commit()
     except IntegrityError:
         db.rollback()
-        raise HTTPException(status_code=409, detail="Goal for this category and year already exists")
+        raise HTTPException(
+            status_code=409,
+            detail="Goal for this category and year already exists",
+        )
     db.refresh(goal)
     return goal
 
