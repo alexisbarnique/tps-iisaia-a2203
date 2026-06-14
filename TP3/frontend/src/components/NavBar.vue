@@ -4,6 +4,7 @@
     <div class="navbar-links">
       <RouterLink to="/dashboard">Inicio</RouterLink>
       <RouterLink to="/entries">Registros</RouterLink>
+      <RouterLink to="/goals">Metas</RouterLink>
       <RouterLink to="/entries/new">+ Agregar</RouterLink>
       <RouterLink to="/summary/monthly">Mensual</RouterLink>
       <RouterLink to="/summary/annual">Anual</RouterLink>
