@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <title>Defensa TP3 — LifeTracker</title>
+  <link rel="stylesheet" href="../../../node_modules/reveal.js/dist/reveal.css">
+  <link rel="stylesheet" href="../../../node_modules/reveal.js/dist/theme/black.css">
+  <style>
+    :root {
+      --color-bg:      #0d0d1a;   /* noche en Hogwarts */
+      --color-gold:    #c9a84c;   /* dorado mágico */
+      --color-crimson: #7b1f1f;   /* burdeos Gryffindor */
+      --font-display:  'Cinzel', serif;
+      --font-body:     'EB Garamond', serif;
+    }
+    body {
+      background-color: var(--color-bg);
+      font-family: var(--font-body);
+      color: var(--color-gold);
+    }
+    h1, h2 {
+      font-family: var(--font-display);
+      color: var(--color-gold);
+    }
+    .accent {
+      color: var(--color-crimson);
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <!-- Slide 1: Título -->
+      <section>
+        <h1>LifeTracker — Metas Anuales</h1>
+        <p class="accent">Defensa TP3</p>
+        <p>Alexis Barniquez &amp; Bárbara Cerezo</p>
+        <p>13 de junio de 2026</p>
+        <p>Funcionalidad completa de backend + frontend para aplicación web de seguimiento de vida personal. Registrá conciertos, libros, películas, ciudades y lugares — y recibí un resumen anual estilo Spotify Wrapped de todo lo que viviste. Además permite definir objetivos anuales y seguir progreso automático.</p>
+      </section>
+
+      <!-- Slide 2: Inicio del Proyecto -->
+      <section>
+        <h2>Inicio Proyecto: LifeTracker</h2>
+        <p class="accent">Aplicación web de seguimiento de vida personal</p>
+        <p style="font-size: 0.9em;">
+          Registrá conciertos, libros, películas, ciudades y lugares — y recibí un resumen anual estilo 
+          <strong>Spotify Wrapped</strong> de todo lo que viviste.
+        </p>
+        <p style="font-size: 0.85em; margin-top: 2em;">
+          <span class="accent">✦ Características principales:</span>
+        </p>
+        <ul style="font-size: 0.85em;">
+          <li>Multi-usuario con autenticación JWT</li>
+          <li>5 categorías de registro (eventos, películas, libros, ciudades, lugares)</li>
+          <li>Resúmenes mensuales y anuales on-demand</li>
+          <li>Skill CLI interactivo `/add-entry`</li>
+          <li>Diseño temático Harry Potter — pergamino oscuro y dorado mágico</li>
+        </ul>
+      </section>
+
+      <!-- Slide 3: Stack Tecnológico + Superpowers -->
+      <section>
+        <h2>Stack Tecnológico + Superpowers</h2>
+        <div style="display: flex; gap: 2em; margin-top: 1.5em;">
+          <div style="flex: 1; text-align: left; font-size: 0.9em;">
+            <p class="accent">Backend</p>
+            <ul>
+              <li>Python 3.11 + FastAPI</li>
+              <li>PostgreSQL + SQLAlchemy</li>
+              <li>Alembic (migraciones)</li>
+              <li>JWT Auth (Bearer token)</li>
+            </ul>
+          </div>
+          <div style="flex: 1; text-align: left; font-size: 0.9em;">
+            <p class="accent">Frontend</p>
+            <ul>
+              <li>Vue.js 3 + Vite</li>
+              <li>Pinia (estado global)</li>
+              <li>CSS 100% custom</li>
+              <li>Responsive design</li>
+            </ul>
+          </div>
+        </div>
+        <p style="margin-top: 1.5em; font-size: 0.9em;">
+          <span class="accent">🤖 Desarrollado con Claude Superpowers:</span><br>
+          Brainstorming → Writing Plans → Subagent-Driven Development → Verify → Finishing Branch
+        </p>
+      </section>
+
+      <!-- Slide 4: Agentes y Skills -->
+      <section>
+        <h2>Agentes y Skills con Claude</h2>
+        <div style="display: flex; gap: 2em; margin-top: 1.5em;">
+          <div style="flex: 1; text-align: left; font-size: 0.85em;">
+            <p class="accent">🤖 Agentes de Desarrollo</p>
+            <ul style="font-size: 0.8em;">
+              <li><strong>api-documenter</strong> — Genera docs automáticas</li>
+              <li><strong>architecture-researcher</strong> — Investiga estructura</li>
+              <li><strong>bug-debugger</strong> — Resuelve bugs</li>
+              <li><strong>code-reviewer</strong> — Revisa código</li>
+              <li><strong>dependency-analyzer</strong> — Analiza dependencias</li>
+              <li><strong>quality-verifier</strong> — Verifica integridad</li>
+              <li><strong>report-generator</strong> — Crea reportes</li>
+            </ul>
+          </div>
+          <div style="flex: 1; text-align: left; font-size: 0.85em;">
+            <p class="accent">⚙️ Skills Interactivos</p>
+            <ul style="font-size: 0.8em;">
+              <li><strong>/add-entry</strong> — Registra actividades desde CLI</li>
+              <li><strong>/setup-goals</strong> — Configura metas interactivas</li>
+            </ul>
+            <p class="accent" style="margin-top: 1.5em;">📋 Reglas del Proyecto</p>
+            <ul style="font-size: 0.8em;">
+              <li><strong>api.md</strong> — Convenciones de endpoints</li>
+              <li><strong>code-style.md</strong> — Estilo de código</li>
+              <li><strong>security.md</strong> — Seguridad y secretos</li>
+              <li><strong>testing.md</strong> — Cobertura de tests</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- Slide 5: Pipeline Superpowers -->
+      <section>
+        <h2>Agregar funcionalidada registrar metas con Superpowers</h2>
+        <ul>
+          <li>Brainstorming → diseño antes del código</li>
+          <li>Writing Plans → plan detallado con TDD</li>
+          <li>Subagent-Driven Development → implementación y revisión</li>
+          <li>Verify → pruebas runtime en backend y frontend</li>
+          <li>Finishing Branch → cierre con 27 tests pasados</li>
+        </ul>
+      </section>
+
+      <!-- Slide 6: Lo construido -->
+      <section>
+        <h2>Lo construido</h2>
+        <p><span class="accent">Backend (Python/FastAPI)</span></p>
+        <ul>
+          <li>Modelo Goal con constraint único</li>
+          <li>Migración Alembic reutilizando tipo PostgreSQL</li>
+          <li>4 endpoints REST con auth JWT</li>
+          <li>Progreso calculado en query time</li>
+        </ul>
+        <p><span class="accent">Frontend (Vue 3/Pinia)</span></p>
+        <ul>
+          <li>Store goals.js con refresh automático</li>
+          <li>GoalCard.vue con progreso circular</li>
+          <li>GoalsView.vue y GoalFormView.vue</li>
+          <li>Widget en Dashboard con mini-ring</li>
+        </ul>
+      </section>
+
+      <!-- Slide 7: Principios aplicados -->
+      <section>
+        <h2>Principios aplicados</h2>
+        <ul>
+          <li>Diseño antes de código</li>
+          <li>TDD en cada tarea</li>
+          <li>Subagentes con contexto limpio</li>
+          <li>Revisión en dos etapas</li>
+          <li>YAGNI — sin features extra</li>
+          <li>Commits frecuentes y descriptivos</li>
+          <li>Skills como flujo de trabajo</li>
+        </ul>
+      </section>
+
+    </div>
+  </div>
+  <script src="../../../node_modules/reveal.js/dist/reveal.js"></script>
+  <script>
+    Reveal.initialize();
+  </script>
+</body>
+</html>
