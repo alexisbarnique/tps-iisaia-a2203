@@ -29,4 +29,4 @@ class GoalRead(BaseModel):
 
 class GoalProgress(GoalRead):
     current: int
-    percentage: float
+    percentage: float = Field(ge=0.0, le=100.0)
