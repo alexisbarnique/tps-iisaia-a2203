@@ -1,7 +1,6 @@
 import uuid
 
-from sqlalchemy import Integer, DateTime, ForeignKey, UniqueConstraint
-from sqlalchemy import Enum as SAEnum
+from sqlalchemy import Enum, Integer, DateTime, ForeignKey, UniqueConstraint
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql import func
 from sqlalchemy.orm import Mapped, mapped_column
@@ -21,6 +20,6 @@ class Goal(Base):
         UUID(as_uuid=True), ForeignKey("users.id", ondelete="CASCADE"), nullable=False
     )
     year: Mapped[int] = mapped_column(Integer, nullable=False)
-    category: Mapped[CategoryEnum] = mapped_column(SAEnum(CategoryEnum, create_type=False), nullable=False)
+    category: Mapped[CategoryEnum] = mapped_column(Enum(CategoryEnum), nullable=False)
     target: Mapped[int] = mapped_column(Integer, nullable=False)
     created_at = mapped_column(DateTime(timezone=True), server_default=func.now())
