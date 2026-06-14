@@ -2,7 +2,7 @@
 
 **Fecha:** 2026-06-13  
 **Proyecto:** LifeTracker — Feature: Metas Anuales  
-**Alumna:** Alexis Barniquez
+**Alumna:** Bárbara Cerezo
 
 ---
 
