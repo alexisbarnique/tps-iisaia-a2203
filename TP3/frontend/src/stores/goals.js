@@ -13,14 +13,13 @@ export const useGoalsStore = defineStore('goals', () => {
 
   async function createGoal(data) {
     const res = await api.post('/goals', data)
-    goals.value.push(res.data)
+    await fetchGoals()
     return res.data
   }
 
   async function updateGoal(id, data) {
     const res = await api.put(`/goals/${id}`, data)
-    const idx = goals.value.findIndex(g => String(g.id) === String(id))
-    if (idx !== -1) goals.value[idx] = res.data
+    await fetchGoals()
     return res.data
   }
 
