@@ -13,7 +13,7 @@ Aplicación web de seguimiento de vida personal. Registrá conciertos, libros, p
 
 | Login | Registros | Resumen anual |
 |---|---|---|
-| ![Login](docs/screenshots/login.png) | ![Registros](docs/screenshots/entries.png) | ![Anual](docs/screenshots/annual.png) |
+| [http://localhost:5173/login](http://localhost:5173/login) | [http://localhost:5173/entries](http://localhost:5173/entries) | [http://localhost:5173/summary/annual](http://localhost:5173/summary/annual) |
 
 ---
 
